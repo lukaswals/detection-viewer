@@ -112,6 +112,11 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Challenges\UA-DETRAC.h" />
+    <ClInclude Include="CSV.h" />
+    <ClInclude Include="Dataset.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

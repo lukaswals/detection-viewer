@@ -9,7 +9,7 @@
 #include "CSV.h"
 
 /******************************************************************************
-* BoundingBox
+* BoundingBox 
 *	Simple struct used for easy drawing. All detections are converted into
 *	this format if they don't already come like this.
 ******************************************************************************/
@@ -27,6 +27,11 @@ struct BoundingBox
 	float score;
 };
 
+
+/******************************************************************************
+* Dataset
+*	Class from which every dataset will inherit.
+******************************************************************************/
 class Dataset {
 protected:
 	char* dataset_name;
@@ -37,7 +42,8 @@ protected:
 	std::vector< std::vector<BoundingBox> > detections;
 public:
 	Dataset(char*, char*, char*);
-	virtual int read_detections();	// Whether it could/couldn't read the detections
+	virtual int read_detections() = 0;	// Whether it could/couldn't read the detections
+	std::vector< BoundingBox > get_frame_detections(int f) { return detections[f]; }
 };
 
 Dataset::Dataset(char* datan, char* detn, char* fn)

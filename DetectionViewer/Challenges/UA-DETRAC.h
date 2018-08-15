@@ -20,11 +20,13 @@ class UADETRAC : public Dataset
 {
 public:
 	UADETRAC(char*, char*);
-	virtual int read_detections();	// Whether it could/couldn't read the detections
+	virtual int read_detections();	// Whether it could/couldn't read the detections+
 };
 
 UADETRAC::UADETRAC(char* detn, char* fn) : Dataset("UA-DETRAC", detn, fn)
-{}
+{
+	std::cout << "File name - " << filename << std::endl;
+}
 
 // Read all the provided detections on a vector of vectors
 //int UADETRAC::read_detections(std::ifstream& file, std::vector< std::vector<BoundingBox> >& detections)
@@ -63,5 +65,7 @@ int UADETRAC::read_detections()
 	}
 	// Last detections are not added in the loop, so we add them here
 	detections.push_back(frame_detections);
+	std::cout << "# of Dets " << detections.size() << std::endl;
+	return 1;
 }
 

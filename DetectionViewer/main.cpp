@@ -15,10 +15,11 @@
 #include "opencv2/imgproc/imgproc.hpp"
 
 #include "Challenges/UA-DETRAC.h"
+#include "Challenges/MOT.h"
 #include "dirent.h"
 
 /******************************************************************************
-* EXTRA FUNCTIONS
+* EXTRA FUNCTIONS FOR DIFFERENT IMAGES TYPES
 ******************************************************************************/
 int pgm_select(const struct dirent *entry)
 {
@@ -52,8 +53,6 @@ int main(int argc, char *argv[])
 	int fcount = -1;
 	//std::vector< std::vector<BoundingBox> > detections;	// list of detections
 
-	//std::cout << "Hello there" << std::endl;
-
 	// executable_name dataset sequence image_folder det_name det_file
 	if (argc >= 5)
 	{
@@ -73,9 +72,14 @@ int main(int argc, char *argv[])
 
 	// Ejemplo de Ejecucion!
 	// DetectionViewer UADETRAC MVI_20011 "C:\Users\win10\Downloads\Datasets\UA-DETRAC\DETRAC-Train-Images\MVI_20011" R-CNN "C:\Users\win10\Downloads\Datasets\UA-DETRAC\DETRAC-Train-Detections\R-CNN\MVI_20011_Det_R-CNN.txt"
+	// DetectionViewer MOT MOT16-02 "C:\Users\win10\Downloads\Datasets\MOT16\train\MOT16-02\img1" DPM "C:\Users\win10\Downloads\Datasets\MOT16\train\MOT16-02\det\det.txt"
+	// Ground Truth must be loaded differently!
+	// DetectionViewer MOT MOT16-02 "C:\Users\win10\Downloads\Datasets\MOT16\train\MOT16-02\img1" "Ground Truth" "C:\Users\win10\Downloads\Datasets\MOT16\train\MOT16-02\gt\gt.txt"
 	
 	// Dataset class definition
-	UADETRAC data = UADETRAC(detector_name, detections_file);
+	// TODO > Make a selector of class depending on the "dataset" variable
+	//UADETRAC data = UADETRAC(detector_name, detections_file);
+	MOT data = MOT(detector_name, detections_file);
 	data.read_detections();
 	// TODO > We need to control errors here!!
 
@@ -92,9 +96,8 @@ int main(int argc, char *argv[])
 	std::cout << "Displaying detections on window..." << std::endl;
 	// Show detections on Window
 	char filename[255];
-	//std::string window_title[255] = sequence + ' ' + detector_name;
+	//std::string window_title[255] = sequence + ' | ' + detector_name;
 	cv::Mat image;
-
 
 	cv::namedWindow(sequence + ' ' + detector_name, cv::WINDOW_AUTOSIZE);
 	for (int frame = 0; frame < fcount; frame++)
@@ -102,7 +105,6 @@ int main(int argc, char *argv[])
 		// Load the current image
 		sprintf_s(filename, "%s/%s", image_folder.c_str(), filelist[frame]->d_name);
 		image = cv::imread(filename, CV_LOAD_IMAGE_COLOR);
-		//std::cout << "Frame " << frame << " of " << fcount << " / Name = " << filelist[frame]->d_name << std::endl;
 
 		std::vector<BoundingBox> frame_detections = data.get_frame_detections(frame);
 		

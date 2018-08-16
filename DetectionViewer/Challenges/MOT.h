@@ -1,9 +1,11 @@
 /*
-* UA-DETRAC Dataset class
-* More info on <http://detrac-db.rit.albany.edu/>
+* MOT(Multiple-Object Tracking) Dataset class
+* More info on <https://motchallenge.net/>
 *
 * Author: Lucas Wals
 */
+#pragma once
+
 #pragma once
 #include <iostream>
 #include <fstream>
@@ -14,19 +16,33 @@
 
 #include "../Dataset.h"
 
-class UADETRAC : public Dataset
+class MOT : public Dataset
 {
 public:
-	UADETRAC(char*, char*);
+	MOT(char*, char*);
 	virtual int read_detections();	// Whether it could/couldn't read the detections+
 };
 
-UADETRAC::UADETRAC(char* detn, char* fn) : Dataset("UA-DETRAC", detn, fn)
+MOT::MOT(char* detn, char* fn) : Dataset("MOT", detn, fn)
 {}
 
 // Read all the provided detections on a vector of vectors
-int UADETRAC::read_detections()
+int MOT::read_detections()
 {
+	/* MOT Detections provides 9 values in an CSV style file. 
+	* This values represent (in order):
+	* Frame #
+	* Identity Number (-1 for Detections, cause not Identity has been assigned yet...)
+	* Top-Left X Coordinate
+	* Top-Left Y Coordinate
+	* Width Coordinate
+	* Height Coordinate
+	* Confidense Score
+	* Ignored
+	* Ignored
+	* Ignored
+	*/
+
 	std::vector<BoundingBox> frame_detections;
 	int actualFrame = 1;
 
@@ -64,4 +80,3 @@ int UADETRAC::read_detections()
 	std::cout << "# of Dets " << detections.size() << std::endl;
 	return 1;
 }
-

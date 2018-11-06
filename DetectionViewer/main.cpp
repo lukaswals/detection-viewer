@@ -16,6 +16,7 @@
 
 #include "Challenges/UA-DETRAC.h"
 #include "Challenges/MOT.h"
+#include "Challenges/OTB.h"
 #include "dirent.h"
 
 /******************************************************************************
@@ -73,13 +74,15 @@ int main(int argc, char *argv[])
 	// Ejemplo de Ejecucion!
 	// DetectionViewer UADETRAC MVI_20011 "C:\Users\win10\Downloads\Datasets\UA-DETRAC\DETRAC-Train-Images\MVI_20011" R-CNN "C:\Users\win10\Downloads\Datasets\UA-DETRAC\DETRAC-Train-Detections\R-CNN\MVI_20011_Det_R-CNN.txt"
 	// DetectionViewer MOT MOT16-02 "C:\Users\win10\Downloads\Datasets\MOT16\train\MOT16-02\img1" DPM "C:\Users\win10\Downloads\Datasets\MOT16\train\MOT16-02\det\det.txt"
+	// DetectionViewer OTB Ironman "C:\Users\win10\Downloads\Datasets\OTB-100\Ironman\img" "Ground Truth" "C:\Users\win10\Downloads\Datasets\OTB-100\Ironman\groundtruth_rect.txt"
 	// Ground Truth must be loaded differently!
 	// DetectionViewer MOT MOT16-02 "C:\Users\win10\Downloads\Datasets\MOT16\train\MOT16-02\img1" "Ground Truth" "C:\Users\win10\Downloads\Datasets\MOT16\train\MOT16-02\gt\gt.txt"
-	
+
 	// Dataset class definition
 	// TODO > Make a selector of class depending on the "dataset" variable
 	//UADETRAC data = UADETRAC(detector_name, detections_file);
-	MOT data = MOT(detector_name, detections_file);
+	//MOT data = MOT(detector_name, detections_file);
+	OTB data = OTB(detector_name, detections_file);
 	data.read_detections();
 	// TODO > We need to control errors here!!
 

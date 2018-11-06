@@ -118,6 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Challenges\MOT.h" />
+    <ClInclude Include="Challenges\OTB.h" />
     <ClInclude Include="Challenges\UA-DETRAC.h" />
     <ClInclude Include="CSV.h" />
     <ClInclude Include="Dataset.h" />

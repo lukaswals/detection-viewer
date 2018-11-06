@@ -35,5 +35,8 @@
     <ClInclude Include="Challenges\MOT.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Challenges\OTB.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

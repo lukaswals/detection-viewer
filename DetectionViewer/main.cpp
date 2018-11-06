@@ -44,22 +44,25 @@ int jpg_select(const struct dirent *entry)
 int main(int argc, char *argv[])
 {
 	// General variables
-	std::string image_folder;
+	std::string imageFolder;
+	std::string saveFolder;
 	std::string sequence;
 	char* dataset;
 	char* detector_name;
 	char* detections_file;
+	bool saveImages = true;
 	// Image files variables
 	struct dirent **filelist;
-	int fcount = -1;
+	int fCount = -1;
 	//std::vector< std::vector<BoundingBox> > detections;	// list of detections
 
-	// executable_name dataset sequence image_folder det_name det_file
+	saveFolder = ".";
+	// executable_name dataset sequence imageFolder det_name det_file
 	if (argc >= 5)
 	{
 		dataset = argv[1];
 		sequence = argv[2];
-		image_folder = argv[3];
+		imageFolder = argv[3];
 		detector_name = argv[4];
 		detections_file = argv[5];
 	}
@@ -87,27 +90,32 @@ int main(int argc, char *argv[])
 	// TODO > We need to control errors here!!
 
 	// Look for the images files and load them if they exist
-	fcount = scandir(image_folder.c_str(), &filelist, jpg_select, alphasort);
-	if (fcount <= 0)
+	fCount = scandir(imageFolder.c_str(), &filelist, jpg_select, alphasort);
+	if (fCount <= 0)
 	{
 		std::cout << "ERROR -> Input images directory not found or empty" << std::endl;
 		return 0;
 	}
 	else
-		std::cout << "Found " << fcount << " images" << std::endl;
+		std::cout << "Found " << fCount << " images" << std::endl;
 
 	std::cout << "Displaying detections on window..." << std::endl;
 	// Show detections on Window
 	char filename[255];
+	char saveFln[255];
 	//std::string window_title[255] = sequence + ' | ' + detector_name;
 	cv::Mat image;
 
+	if (saveImages)
+		std::cout << "Activated saving of images..." << std::endl;
+
 	cv::namedWindow(sequence + ' ' + detector_name, cv::WINDOW_AUTOSIZE);
-	for (int frame = 0; frame < fcount; frame++)
+	for (int frame = 0; frame < fCount; frame++)
 	{
 		// Load the current image
-		sprintf_s(filename, "%s/%s", image_folder.c_str(), filelist[frame]->d_name);
+		sprintf_s(filename, "%s/%s", imageFolder.c_str(), filelist[frame]->d_name);
 		image = cv::imread(filename, CV_LOAD_IMAGE_COLOR);
+		//std::cout << "Filename = " << filelist[frame]->d_name << std::endl;
 
 		std::vector<BoundingBox> frame_detections = data.get_frame_detections(frame);
 		
@@ -116,5 +124,12 @@ int main(int argc, char *argv[])
 
 		imshow(sequence + ' ' + detector_name, image);
 		cv::waitKey(50);
+
+		if (saveImages)
+		{ 
+			//cv::imwrite("../../images/Gray_Image.jpg", image);
+			sprintf_s(saveFln, "%s/%s", saveFolder, filelist[frame]->d_name);
+			cv::imwrite(saveFln , image);
+		}
 	}
 }
